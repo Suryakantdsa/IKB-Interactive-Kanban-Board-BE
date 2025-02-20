@@ -49,6 +49,6 @@ const taskSchema = new mongoose_1.Schema({
         enum: Object.values(TaskInterface_1.StatusEnum),
         default: TaskInterface_1.StatusEnum.TODO,
     },
-});
+}, { timestamps: true });
 const Task = mongoose_1.default.model("task", taskSchema);
 exports.default = Task;

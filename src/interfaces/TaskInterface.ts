@@ -2,6 +2,7 @@ export enum StatusEnum {
   TODO = "TODO",
   INPROGRESS = "INPROGRESS",
   COMPLETED = "COMPLETED",
+  DELETED = "DELETED",
 }
 
 export interface Task_GET {

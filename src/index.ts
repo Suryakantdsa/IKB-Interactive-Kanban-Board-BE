@@ -48,17 +48,7 @@ app.get("/get-tasks", async (req, res) => {
     };
     const allTask = (await Task.find()) as Task_GET[];
     if (allTask && allTask.length > 0) {
-      for (let task of allTask) {
-        if (task.status === StatusEnum.TODO) {
-          data.toDo.push(task);
-        } else if (task.status === StatusEnum.INPROGRESS) {
-          data.inProgress.push(task);
-        } else {
-          data.completed.push(task);
-        }
-      }
-
-      res.status(201).json(data);
+      res.status(201).json(allTask);
       return;
     }
     res.status(201).json(allTask);
@@ -89,12 +79,21 @@ app.patch("/update-task/:id", async (req, res) => {
 });
 app.delete("/delete-task/:id", async (req, res) => {
   try {
-    const deletedTask = await Task.findByIdAndDelete(req.params.id);
+    const deletedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: StatusEnum.DELETED,
+      },
+      { new: true }
+    );
     if (!deletedTask) {
       res.status(404).json({ msg: "Task not found" });
       return;
     }
-    res.status(200).json({ msg: "Task deleted successfully" });
+    console.log();
+    res
+      .status(200)
+      .json({ msg: "Task deleted successfully", task: deletedTask });
   } catch (error: any) {
     res.status(500).json({ msg: error.message });
   }

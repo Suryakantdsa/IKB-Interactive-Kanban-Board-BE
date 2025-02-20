@@ -6,4 +6,5 @@ var StatusEnum;
     StatusEnum["TODO"] = "TODO";
     StatusEnum["INPROGRESS"] = "INPROGRESS";
     StatusEnum["COMPLETED"] = "COMPLETED";
+    StatusEnum["DELETED"] = "DELETED";
 })(StatusEnum || (exports.StatusEnum = StatusEnum = {}));

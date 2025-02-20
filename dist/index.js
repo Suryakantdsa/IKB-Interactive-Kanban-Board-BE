@@ -58,18 +58,7 @@ app.get("/get-tasks", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         };
         const allTask = (yield taskModel_1.default.find());
         if (allTask && allTask.length > 0) {
-            for (let task of allTask) {
-                if (task.status === TaskInterface_1.StatusEnum.TODO) {
-                    data.toDo.push(task);
-                }
-                else if (task.status === TaskInterface_1.StatusEnum.INPROGRESS) {
-                    data.inProgress.push(task);
-                }
-                else {
-                    data.completed.push(task);
-                }
-            }
-            res.status(201).json(data);
+            res.status(201).json(allTask);
             return;
         }
         res.status(201).json(allTask);
@@ -97,12 +86,17 @@ app.patch("/update-task/:id", (req, res) => __awaiter(void 0, void 0, void 0, fu
 }));
 app.delete("/delete-task/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const deletedTask = yield taskModel_1.default.findByIdAndDelete(req.params.id);
+        const deletedTask = yield taskModel_1.default.findByIdAndUpdate(req.params.id, {
+            status: TaskInterface_1.StatusEnum.DELETED,
+        }, { new: true });
         if (!deletedTask) {
             res.status(404).json({ msg: "Task not found" });
             return;
         }
-        res.status(200).json({ msg: "Task deleted successfully" });
+        console.log();
+        res
+            .status(200)
+            .json({ msg: "Task deleted successfully", task: deletedTask });
     }
     catch (error) {
         res.status(500).json({ msg: error.message });
